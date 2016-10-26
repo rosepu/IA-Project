@@ -1,0 +1,39 @@
+#w
+7
+
+#n
+27
+
+#m
+4
+
+#A
+D A N -
+
+#R
+7 7 7 7 7 4 4
+7 7 7 7 7 4 4
+7 7 7 7 7 4 4
+
+#MAXS
+7 6 5 4
+
+#MINS
+2 2 2 2
+
+#MAXW
+7
+
+#MINW
+4
+
+#NSLength2
+3
+
+#NSLength3
+0
+
+#C2
+N D
+N A
+A D
