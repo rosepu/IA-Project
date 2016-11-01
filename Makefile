@@ -1,5 +1,6 @@
 CC = g++
 CFLAGS = -g -Wall
+INC := -I include/
 OBJS = *.cpp
 
 PROG = Greedy+TS
@@ -18,4 +19,4 @@ run:$(PROG)
 
 $(PROG):
 	$(KDIR_P) $(BINDIR)
-	$(CC) $(SRCDIR)/$(OBJS) -o $(BINDIR)/$(PROG) $(CFLAGS)
+	$(CC) $(SRCDIR)/$(OBJS) $(CFLAGS) $(INC) -o $(BINDIR)/$(PROG) 
