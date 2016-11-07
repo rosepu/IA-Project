@@ -1,9 +1,14 @@
+#ifndef UTILITY_H_
+#define UTILITY_H_
+
 #include <iostream>
 #include <stdlib.h> 
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <regex>
 
 namespace utility
 {
@@ -22,4 +27,10 @@ namespace utility
         std::vector< std::vector<int> > &R,
         std::vector< std::vector<char> > &C2        
     );
+
+    std::string moveToString(int i, int j, int k);
+
+    int countMatchInRegex(std::string s, std::string re);
 }
+
+#endif

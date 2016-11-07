@@ -99,4 +99,21 @@ namespace utility
             return -1;
         }
     }
+
+    std::string moveToString(int i, int j, int k)
+    {
+        ostringstream os;
+        os << i << "-" << j << "-" << k;
+        return os.str();
+    }
+
+    int countMatchInRegex(std::string s, std::string re)
+    {
+        std::regex words_regex(re);
+        auto words_begin = std::sregex_iterator(
+            s.begin(), s.end(), words_regex);
+        auto words_end = std::sregex_iterator();
+
+        return std::distance(words_begin, words_end);
+    }
 }

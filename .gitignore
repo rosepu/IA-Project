@@ -30,3 +30,6 @@
 
 # Bin dir
 bin/
+
+#Visual Code
+.vscode

@@ -6,6 +6,12 @@
 #include <vector>
 #include <cmath>
 #include "utility.h"
+#include "solution.h"
+#include "instance.h"
+#include "tabulist.h"
+
+
+#define MAXITERATIONS 10
 
 using namespace std;
 
@@ -31,25 +37,58 @@ int main(int argc, char const *argv[])
 	archivo_instancia = string("Instancias/") + string((char*)argv[1]);
 	seed = atoi(argv[2]);
 	
-	/* Valores de la instancia */
-	int w,n,m, MAXW, MINW, NSLength2, NSLength3;
-    vector<char> A;
-    vector<int> MAXS, MINS;
-    vector< vector<int> > R;
-    vector< vector<char> > C2;
+	/* Instancia */
+	instance instancia(archivo_instancia);
+
+	solution current_solution(instancia);
+	current_solution.greedy(seed);
+	solution best_solution = current_solution, candidate_solution = current_solution;
 	
-	int aux = utility::readInstance(archivo_instancia, w, n, m, MAXW, MINW, NSLength2, NSLength3, A, MAXS, MINS, R, C2);
-	if (aux == 1)
+	cout << "Solución obtenida mediante greedy (" << current_solution.get_quality() << ") :" << endl;
+	current_solution.print_solution();
+	cout << "--------------------------------------------------------------" << endl;
+
+	tabulist lista_tabu(instancia.get_n());
+
+	string lastSwap, bestSwap;
+	int lastSwapCount;
+
+	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
-		cerr << "\033[1;31mERROR: Formato de la instancia incorrecto.\033[0m" << endl;
-		exit(1);
-	} else if (aux == -1) {
-		cerr << "\033[1;31mERROR: No se pudo abrir el archivo de la instancia.\033[0m" << endl;
-		exit(1);
+		/*for encargado de generar el neighbour*/
+		for (int i=0; i<instancia.get_w(); i++)
+		{
+			for (int j=0; j<instancia.get_n(); j++)
+			{
+				for (int k=j; k<instancia.get_n(); k++)
+				{
+					if (j != k)
+					{
+						lastSwapCount = current_solution.eval_swap(i,j,k);
+						if (lastSwapCount < candidate_solution.get_quality() )
+						{
+							lastSwap = utility::moveToString(i,j,k);
+							if (!lista_tabu.in(lastSwap) || lastSwapCount < best_solution.get_quality() )
+							{
+								candidate_solution = current_solution.swap(i,j,k);
+								bestSwap = lastSwap;
+							} 
+						} 
+					}
+				}
+			}			
+		}
+
+		current_solution = candidate_solution;
+		lista_tabu.add(bestSwap);
+		if (current_solution < best_solution)
+		{
+			best_solution = current_solution;
+		}
 	}
 	
-	 
-
+	best_solution.print_solution();
+	cout << "--------------------------------------------------------------" << endl;
 
 	return 0;
 }
