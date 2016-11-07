@@ -180,7 +180,7 @@ int solution::calculate_fitness()
 	char lastChar, currentChar, dayOff = instancia.get_A()[ instancia.get_m() - 1 ];
 	std::ostringstream os_wb, os_sb;
 
-	std::vector<std::vector<std::string> > block;
+	std::vector<std::vector<int> > block;
 	block.resize( instancia.get_m() +1 );
 	int i, j;
 
@@ -217,9 +217,8 @@ int solution::calculate_fitness()
 			{
 				os_sb << currentChar;
 			} else {
-				int poss = std::find(instancia.get_A().begin(), instancia.get_A().end(), lastChar) - instancia.get_A().begin();
-				std::cout << poss << "\t" << lastChar << std::endl;
-				std::cout << i << "\t" << j << std::endl;
+				int poss = utility::indexVector(instancia.get_A(), lastChar);
+
 			}
 /*
 			if (lastChar != dayOff && currentChar == dayOff ) {
