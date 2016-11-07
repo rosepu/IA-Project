@@ -47,14 +47,14 @@ int main(int argc, char const *argv[])
 	cout << "Solución obtenida mediante greedy (" << current_solution.get_quality() << ") :" << endl;
 	current_solution.print_solution();
 	cout << "--------------------------------------------------------------" << endl;
-	
+	current_solution.calculate_fitness();
 
 	tabulist lista_tabu(instancia.get_n()*20);
 
 	string lastSwap, bestSwap;
 	int lastSwapCount, minSwap;
 	solution::move bestMov;
-
+/*
 	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
 		minSwap = 100000;
@@ -88,12 +88,12 @@ int main(int argc, char const *argv[])
 			best_solution = current_solution;
 		}
 	}
-		
+		*/
 			
 /*
 	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
-		/*for encargado de generar el neighbour
+		for encargado de generar el neighbour
 		for (int i=0; i<instancia.get_w(); i++)
 		{
 			for (int j=0; j<instancia.get_n(); j++)

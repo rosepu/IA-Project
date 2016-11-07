@@ -30,7 +30,11 @@ namespace utility
 
     std::string moveToString(int i, int j, int k);
 
-    int countMatchInRegex(std::string s, std::string re);
+    int distance(std::string wb, int min, int max);
+
+    int indexVector(std::vector<char> v, char c);
+
+    // int countMatchInRegex(std::string s, std::string re);
 }
 
 #endif

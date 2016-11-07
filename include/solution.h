@@ -2,6 +2,7 @@
 #define SOLUTION_H_
  
 #include <string>
+#include <sstream>
 #include <vector>
 #include <stdlib.h>
 #include "instance.h"
@@ -30,6 +31,7 @@ class solution
 		int eval_swap(int i, int j, int k);
 		void get_best_neighbour();
 		void print_solution();
+		int calculate_fitness();
 		
 
 		/* funciones get */

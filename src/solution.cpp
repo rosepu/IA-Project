@@ -1,10 +1,12 @@
 #include "solution.h"
 
+/* Constructor por defecto */
 solution::solution()
 {
 	this->init = false;
 }
 
+/* Construcor de la clase */
 solution::solution(instance &ins)
 {
 	this->instancia = ins;
@@ -118,12 +120,12 @@ int solution::eval_String(std::string cadena)
 	std::vector< std::string > pat = instancia.get_pattersn();
 	for (unsigned int q=0; q<pat.size(); q++)
 	{
-		match_count += utility::countMatchInRegex(cadena, pat[q]);
-		match_count += utility::countMatchInRegex(subC1, pat[q]);
-		match_count += utility::countMatchInRegex(subC2, pat[q]);
-		match_count += utility::countMatchInRegex(subC3, pat[q]);
-		match_count += utility::countMatchInRegex(subC4, pat[q]);
-		match_count += utility::countMatchInRegex(subC5, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(cadena, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(subC1, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(subC2, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(subC3, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(subC4, pat[q]);
+		match_count += 1;//utility::countMatchInRegex(subC5, pat[q]);
 	}
 	return match_count;
 }
@@ -163,13 +165,79 @@ int solution::eval_swap(int i, int j, int k)
 	
 	for (unsigned int q=0; q<pat.size(); q++)
 	{
-		match_countO += utility::countMatchInRegex(cadenaOJ, pat[q]);
-		match_countO += utility::countMatchInRegex(cadenaOK, pat[q]);
-		match_countS += utility::countMatchInRegex(cadenaSJ, pat[q]);
-		match_countS += utility::countMatchInRegex(cadenaSK, pat[q]);
+		match_countO += 1;//utility::countMatchInRegex(cadenaOJ, pat[q]);
+		match_countO += 1;//utility::countMatchInRegex(cadenaOK, pat[q]);
+		match_countS += 1;//utility::countMatchInRegex(cadenaSJ, pat[q]);
+		match_countS += 1;//utility::countMatchInRegex(cadenaSK, pat[q]);
 	}
 
 	return match_countS - match_countO;
+}
+
+int solution::calculate_fitness()
+{
+	/* Generar bloques */
+	char lastChar, currentChar, dayOff = instancia.get_A()[ instancia.get_m() - 1 ];
+	std::ostringstream os_wb, os_sb;
+
+	std::vector<std::vector<std::string> > block;
+	block.resize( instancia.get_m() +1 );
+	int i, j;
+
+	/* Busca un inicio de un bloque */
+	lastChar = ' ';
+	for (i=0; i<instancia.get_n(); i++)
+	{
+		for (j=0; j<instancia.get_w(); j++)
+		{
+			currentChar = matrix[i][j];
+			if (lastChar == dayOff && currentChar != dayOff) {
+				/* inicia un bloque */
+				os_wb << currentChar;
+				os_sb << currentChar;
+
+				goto swbFound;
+			} else {
+				lastChar = currentChar;
+			}
+		}
+	}
+
+	swbFound:
+	std::cout << i << "\t" << j << std::endl;
+
+	
+	for (i=i; i<instancia.get_n(); i++)
+	{
+		
+		for (j=j; j<instancia.get_w(); j++)
+		{
+			currentChar = matrix[i][j];
+			if (lastChar == currentChar)
+			{
+				os_sb << currentChar;
+			} else {
+				int poss = std::find(instancia.get_A().begin(), instancia.get_A().end(), lastChar) - instancia.get_A().begin();
+				std::cout << poss << "\t" << lastChar << std::endl;
+				std::cout << i << "\t" << j << std::endl;
+			}
+/*
+			if (lastChar != dayOff && currentChar == dayOff ) {
+				 
+			} else if (lastChar == dayOff && currentChar != dayOff) {
+
+			} else if ()
+*/
+		}
+		std::cout << std::endl;
+	} 
+	
+
+
+	/* Evaluar bloques */
+
+	/* Cuenta las secuencias invalidas */
+	return 0;
 }
 
 int solution::get_quality(){ return this->quality; }
