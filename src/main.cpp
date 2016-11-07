@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 10
+#define MAXITERATIONS 100
 
 using namespace std;
 
@@ -41,21 +41,59 @@ int main(int argc, char const *argv[])
 	instance instancia(archivo_instancia);
 
 	solution current_solution(instancia);
-	current_solution.greedy(seed);
+	current_solution.greedy(seed); 
 	solution best_solution = current_solution, candidate_solution = current_solution;
 	
 	cout << "Solución obtenida mediante greedy (" << current_solution.get_quality() << ") :" << endl;
 	current_solution.print_solution();
 	cout << "--------------------------------------------------------------" << endl;
+	
 
-	tabulist lista_tabu(instancia.get_n());
+	tabulist lista_tabu(instancia.get_n()*20);
 
 	string lastSwap, bestSwap;
-	int lastSwapCount;
+	int lastSwapCount, minSwap;
+	solution::move bestMov;
 
 	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
-		/*for encargado de generar el neighbour*/
+		minSwap = 100000;
+		for (int i=0; i<instancia.get_w(); i++)
+		{
+			for (int j=0; j<instancia.get_n()-1; j++)
+			{
+				for (int k=j+1; k<instancia.get_n(); k++)
+				{
+					lastSwapCount = current_solution.eval_swap(i,j,k);
+					if (lastSwapCount < minSwap)
+					{
+						lastSwap = utility::moveToString(i,j,k);
+						if (!lista_tabu.in(lastSwap))
+						{
+							minSwap = lastSwapCount;
+							bestMov.set(i,j,k);
+							bestSwap = lastSwap;
+						}
+					}  
+				}
+			}
+			
+		}
+		cout << minSwap << endl;
+		//cout << bestMov.i << "\t" << bestMov.j << "\t" << bestMov.k << endl;
+		current_solution = current_solution.swap(bestMov.i,bestMov.j,bestMov.k);
+		lista_tabu.add(bestSwap);
+		if (current_solution < best_solution)
+		{
+			best_solution = current_solution;
+		}
+	}
+		
+			
+/*
+	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
+	{
+		/*for encargado de generar el neighbour
 		for (int i=0; i<instancia.get_w(); i++)
 		{
 			for (int j=0; j<instancia.get_n(); j++)
@@ -85,8 +123,11 @@ int main(int argc, char const *argv[])
 		{
 			best_solution = current_solution;
 		}
-	}
+	}*/
 	
+	cout << "Solución current (" << current_solution.get_quality() << ") :" << endl;
+	current_solution.print_solution();
+	cout << "Solución best (" << current_solution.get_quality() << ") :" << endl;
 	best_solution.print_solution();
 	cout << "--------------------------------------------------------------" << endl;
 

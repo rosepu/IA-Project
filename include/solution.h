@@ -46,6 +46,8 @@ class solution
 			this->init = sol.init;
 			return *this;
 		}
+
+
 		bool operator <(const solution& right)
 		{
 			return this->quality < right.quality;
@@ -56,6 +58,16 @@ class solution
 		}
 		//TODO: sobre escribir los operadores == > <
 	
+		/* nested class */
+		class move
+		{
+			public:
+				int i,j,k;
+				move();
+				move(int i, int j, int k);
+				void set(int i, int j, int k);
+		};
 };
+
 
 #endif
