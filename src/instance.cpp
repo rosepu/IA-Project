@@ -23,6 +23,10 @@ void instance::set_instance(std::string &archivo_instancia)
 		std::cerr << "\033[1;31mERROR: No se pudo abrir el archivo de la instancia.\033[0m" << std::endl;
 		exit(1);
 	}
+	for (unsigned int i = 0; i < A.size(); i++)
+	{
+		map_A[ A[i] ] = i;
+	}
 }
 
 void instance::set_patterns()
@@ -83,6 +87,10 @@ int instance::get_MAXW(){ return MAXW; };
 
 int instance::get_MINW(){ return MINW; };
 
+int instance::get_NSLength2() { return NSLength2; }
+
+int instance::get_NSLength3() { return NSLength3; }
+
 std::vector<char>  instance::get_A(){ return A; };
 
 std::vector<int> instance::get_MAXS(){ return MAXS; };
@@ -94,3 +102,5 @@ std::vector< std::vector<int> > instance::get_R(){ return R; };
 std::vector< std::vector<char> > instance::get_C2(){ return C2; };
 
 std::vector< std::string > instance::get_pattersn() { return patterns; }
+
+std::map<char, int> instance::get_mapA() { return map_A; }

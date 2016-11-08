@@ -29,7 +29,7 @@ solution solution::swap(int i, int j, int k)
 	matrix[k][i] = aux;
 
 	
-	this->quality = solution::eval_String( solution::matrixToString() );
+	this->quality = solution::calculate_fitness();
 
 	return *this;
 }
@@ -74,7 +74,7 @@ void solution::greedy(int seed)
 			requirements[i].erase(requirements[i].begin() + aux);
 		}
 	}
-	this->quality = solution::eval_String( solution::matrixToString() );
+	this->quality = solution::calculate_fitness();
 
 }
 
@@ -177,24 +177,30 @@ int solution::eval_swap(int i, int j, int k)
 int solution::calculate_fitness()
 {
 	/* Generar bloques */
+	int i, j, is, js, w =  instancia.get_w(), n = instancia.get_n();
 	char lastChar, currentChar, dayOff = instancia.get_A()[ instancia.get_m() - 1 ];
-	std::ostringstream os_wb, os_sb;
+	int count_wb, count_sb, total_sum=0, l2 = instancia.get_NSLength2(), l3= instancia.get_NSLength3();
 
-	std::vector<std::vector<int> > block;
-	block.resize( instancia.get_m() +1 );
-	int i, j;
+	std::vector<int> block_work;
+	std::vector<std::vector<int> > block_shift;
+	block_shift.resize( instancia.get_m() );
 
 	/* Busca un inicio de un bloque */
 	lastChar = ' ';
-	for (i=0; i<instancia.get_n(); i++)
+	for (i=0; i<n; i++)
 	{
-		for (j=0; j<instancia.get_w(); j++)
+		for (j=0; j<w; j++)
 		{
 			currentChar = matrix[i][j];
 			if (lastChar == dayOff && currentChar != dayOff) {
 				/* inicia un bloque */
-				os_wb << currentChar;
-				os_sb << currentChar;
+				count_wb = 1;
+				count_sb = 1;
+
+				lastChar = currentChar;
+				js = j;
+				is = i;
+				j++;				
 
 				goto swbFound;
 			} else {
@@ -204,39 +210,72 @@ int solution::calculate_fitness()
 	}
 
 	swbFound:
-	std::cout << i << "\t" << j << std::endl;
-
-	
-	for (i=i; i<instancia.get_n(); i++)
+	while (!(i == is && j == js))
 	{
-		
-		for (j=j; j<instancia.get_w(); j++)
+		currentChar = matrix[i][j];
+		/* Calcula los work block*/
+		if (lastChar != dayOff && currentChar == dayOff)
 		{
-			currentChar = matrix[i][j];
-			if (lastChar == currentChar)
-			{
-				os_sb << currentChar;
+			block_work.push_back(count_wb);
+
+			
+		} else if (currentChar != dayOff) {
+			if (lastChar == dayOff) {
+				count_wb = 1;
 			} else {
-				int poss = utility::indexVector(instancia.get_A(), lastChar);
-
+				count_wb++;
 			}
-/*
-			if (lastChar != dayOff && currentChar == dayOff ) {
-				 
-			} else if (lastChar == dayOff && currentChar != dayOff) {
+		} 
 
-			} else if ()
-*/
+
+		/* Calcula shift bloque */
+		if (lastChar != currentChar) 
+		{
+			block_shift[ instancia.get_mapA().find( lastChar )->second ].push_back(count_sb);
+			count_sb = 1;
+		} else {
+			count_sb++;
 		}
-		std::cout << std::endl;
-	} 
-	
 
+		/* Cuenta las secuencias invalidas */
+		for (int k = 0; k < l2; ++k)
+		{
+			if (instancia.get_C2()[k][0]==lastChar && instancia.get_C2()[k][1]==currentChar) total_sum++;
+		}
+
+
+		for (int k = 0; k < l3; ++k)
+		{
+			int l3_aux = l2+k;
+			if (
+				instancia.get_C2()[l3_aux][0]==lastChar && 
+				instancia.get_C2()[l3_aux][1]==currentChar &&
+				instancia.get_C2()[l3_aux][3]==matrix[i][j+1]
+			) total_sum++;
+		}
+
+
+		lastChar = currentChar;
+
+		j = (j+1)%w;
+		if (j == 0) i = (i+1)%n;
+	} 
+	block_shift[ instancia.get_mapA().find( lastChar )->second ].push_back(count_sb);
 
 	/* Evaluar bloques */
+	for (unsigned int i = 0; i < block_work.size(); ++i)
+	{
+		total_sum += utility::distance(block_work[i], instancia.get_MINW(), instancia.get_MAXW());
+	}
 
-	/* Cuenta las secuencias invalidas */
-	return 0;
+	for (unsigned int i = 0; i < block_shift.size(); ++i)
+	{
+		for (unsigned int j = 0; j < block_shift[i].size(); ++j)
+		{
+			total_sum += utility::distance(block_shift[i][j], instancia.get_MINS()[i], instancia.get_MAXS()[i]);
+		}
+	}
+	return total_sum;
 }
 
 int solution::get_quality(){ return this->quality; }

@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 
 	solution current_solution(instancia);
 	current_solution.greedy(seed); 
-	solution best_solution = current_solution, candidate_solution = current_solution;
+	solution best_solution = current_solution, candidate_solution = current_solution, best_candidate_silution  = current_solution;
 	
 	cout << "Solución obtenida mediante greedy (" << current_solution.get_quality() << ") :" << endl;
 	current_solution.print_solution();
@@ -53,8 +53,7 @@ int main(int argc, char const *argv[])
 
 	string lastSwap, bestSwap;
 	int lastSwapCount, minSwap;
-	solution::move bestMov;
-/*
+
 	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
 		minSwap = 100000;
@@ -64,14 +63,13 @@ int main(int argc, char const *argv[])
 			{
 				for (int k=j+1; k<instancia.get_n(); k++)
 				{
-					lastSwapCount = current_solution.eval_swap(i,j,k);
-					if (lastSwapCount < minSwap)
+					candidate_solution = current_solution.swap(i,j,k);
+					if (candidate_solution.get_quality() < minSwap)
 					{
 						lastSwap = utility::moveToString(i,j,k);
 						if (!lista_tabu.in(lastSwap))
 						{
-							minSwap = lastSwapCount;
-							bestMov.set(i,j,k);
+							best_candidate_silution  = current_solution;
 							bestSwap = lastSwap;
 						}
 					}  
@@ -79,16 +77,15 @@ int main(int argc, char const *argv[])
 			}
 			
 		}
-		cout << minSwap << endl;
-		//cout << bestMov.i << "\t" << bestMov.j << "\t" << bestMov.k << endl;
-		current_solution = current_solution.swap(bestMov.i,bestMov.j,bestMov.k);
+		
 		lista_tabu.add(bestSwap);
-		if (current_solution < best_solution)
+		if (best_candidate_silution < best_solution)
 		{
-			best_solution = current_solution;
+			best_solution = best_candidate_silution;
 		}
+		current_solution = best_candidate_silution;
 	}
-		*/
+		
 			
 /*
 	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
@@ -125,7 +122,7 @@ int main(int argc, char const *argv[])
 		}
 	}*/
 	
-	cout << "Solución current (" << current_solution.get_quality() << ") :" << endl;
+	cout << "Solución current (" << best_solution.get_quality() << ") :" << endl;
 	current_solution.print_solution();
 	cout << "Solución best (" << current_solution.get_quality() << ") :" << endl;
 	best_solution.print_solution();

@@ -107,9 +107,8 @@ namespace utility
 		return os.str();
 	}
 
-	int distance(std::string wb, int min, int max)
-	{
-		int wb_size = wb.size();
+	int distance(int wb_size, int min, int max)
+	{		
 		if (wb_size < min)
 		{
 			return min - wb_size;
@@ -119,15 +118,7 @@ namespace utility
 		return 0;
 	}
 
-	int indexVector(std::vector<char> v, char c)
-	{
-		for (int i=0; i<v.size(); i++)
-		{
-			if (c == v[i]) return i;
-		}
-		return -1;
-	}
-
+	
 	/* int countMatchInRegex(std::string s, std::string re)
 	{
 		std::regex words_regex(re);

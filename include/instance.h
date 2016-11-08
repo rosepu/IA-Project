@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <sstream>
 #include "utility.h"
 
@@ -18,6 +19,7 @@ class instance
 		std::vector< std::vector<int> > R;
 		std::vector< std::vector<char> > C2;
 		std::vector< std::string > patterns;
+		std::map<char, int> map_A;
 		
 		void set_patterns();
 
@@ -36,12 +38,15 @@ class instance
 		int get_m();
 		int get_MAXW();
 		int get_MINW();
+		int get_NSLength2();
+		int get_NSLength3();
 		std::vector<char> get_A();
 		std::vector<int> get_MAXS(); 
 		std::vector<int> get_MINS();
 		std::vector< std::vector<int> > get_R();
 		std::vector< std::vector<char> > get_C2();
 		std::vector< std::string > get_pattersn();
+		std::map<char, int> get_mapA();
 };
 
 #endif
