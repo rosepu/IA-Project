@@ -28,6 +28,7 @@ class solution
 		void set_instance(instance* ins);
 		void greedy(int seed);
 		solution& swap(int i, int j, int k);
+		solution& swapBlock(int i, int j, int k, int len);
 		int eval_swap(int i, int j, int k);
 		void get_best_neighbour();
 		void print_solution();

@@ -78,6 +78,32 @@ int main(int argc, char const *argv[])
 				}
 			}
 		}
+
+		for (int l = 2; l <= 3; l++)
+		{
+			for (int i=0; i<instancia.get_w(); i++)
+			{
+				for (int j=0; j<instancia.get_n()-1; j++)
+				{
+					for (int k=j+1; k<instancia.get_n(); k++)
+					{
+						candidate_solution = current_solution;
+						candidate_solution = candidate_solution.swapBlock(i,j,k,l);
+						if (candidate_solution.get_quality() < minSwap)
+						{	
+							lastSwap = utility::moveToString(i,j,k);
+							if (!lista_tabu.in(lastSwap) || minSwap < best_solution.get_quality() )
+							{
+								minSwap	= candidate_solution.get_quality();
+								best_candidate_silution  = candidate_solution;
+								bestSwap = lastSwap;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		lista_tabu.add(bestSwap);
 		if (best_candidate_silution < best_solution)
 		{

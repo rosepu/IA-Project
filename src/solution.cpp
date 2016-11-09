@@ -34,6 +34,27 @@ solution& solution::swap(int i, int j, int k)
 	return *this;
 }
 
+solution& solution::swapBlock(int i, int j, int k, int len)
+{
+	char aux;
+	int js, ks, n=instancia.get_n();
+	for (int i = 0; i < len; ++i)
+	{
+		js = (j+i)%n;
+		ks = (k+i)%n;
+
+		aux = matrix[js][i];
+	
+		matrix[js][i] = matrix[ks][i];
+	
+		matrix[ks][i] = aux;
+	}
+	
+	this->quality = solution::calculate_fitness();
+
+	return *this;
+}
+
 void solution::greedy(int seed)
 {
 	if (!(this->init)) return;
