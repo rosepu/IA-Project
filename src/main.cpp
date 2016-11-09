@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 100
+#define MAXITERATIONS 200000
 
 using namespace std;
 
@@ -49,12 +49,12 @@ int main(int argc, char const *argv[])
 	cout << "--------------------------------------------------------------" << endl;
 	current_solution.calculate_fitness();
 
-	tabulist lista_tabu(instancia.get_n()*20);
+	tabulist lista_tabu(instancia.get_n()*10);
 
 	string lastSwap, bestSwap;
-	int lastSwapCount, minSwap;
+	int minSwap, iteration;
 
-	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
+	for (iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
 		minSwap = 100000;
 		for (int i=0; i<instancia.get_w(); i++)
@@ -63,70 +63,37 @@ int main(int argc, char const *argv[])
 			{
 				for (int k=j+1; k<instancia.get_n(); k++)
 				{
-					candidate_solution = current_solution.swap(i,j,k);
+					candidate_solution = current_solution;
+					candidate_solution = candidate_solution.swap(i,j,k);
 					if (candidate_solution.get_quality() < minSwap)
-					{
+					{	
 						lastSwap = utility::moveToString(i,j,k);
-						if (!lista_tabu.in(lastSwap))
+						if (!lista_tabu.in(lastSwap) || minSwap < best_solution.get_quality() )
 						{
-							best_candidate_silution  = current_solution;
+							minSwap	= candidate_solution.get_quality();
+							best_candidate_silution  = candidate_solution;
 							bestSwap = lastSwap;
 						}
-					}  
+					}
 				}
 			}
-			
 		}
-		
 		lista_tabu.add(bestSwap);
 		if (best_candidate_silution < best_solution)
 		{
 			best_solution = best_candidate_silution;
+			if (best_solution.get_quality() == 0) break;
 		}
-		current_solution = best_candidate_silution;
+		current_solution = best_candidate_silution;	
 	}
-		
-			
-/*
-	for (int iteration = 0; iteration < MAXITERATIONS; iteration++)
-	{
-		for encargado de generar el neighbour
-		for (int i=0; i<instancia.get_w(); i++)
-		{
-			for (int j=0; j<instancia.get_n(); j++)
-			{
-				for (int k=j; k<instancia.get_n(); k++)
-				{
-					if (j != k)
-					{
-						lastSwapCount = current_solution.eval_swap(i,j,k);
-						if (lastSwapCount < candidate_solution.get_quality() )
-						{
-							lastSwap = utility::moveToString(i,j,k);
-							if (!lista_tabu.in(lastSwap) || lastSwapCount < best_solution.get_quality() )
-							{
-								candidate_solution = current_solution.swap(i,j,k);
-								bestSwap = lastSwap;
-							} 
-						} 
-					}
-				}
-			}			
-		}
-
-		current_solution = candidate_solution;
-		lista_tabu.add(bestSwap);
-		if (current_solution < best_solution)
-		{
-			best_solution = current_solution;
-		}
-	}*/
 	
-	cout << "Solución current (" << best_solution.get_quality() << ") :" << endl;
+	cout << "Solución current (" << current_solution.get_quality() << ") :" << endl;
 	current_solution.print_solution();
-	cout << "Solución best (" << current_solution.get_quality() << ") :" << endl;
+	cout << "Solución best (" << best_solution.get_quality() << ") :" << endl;
 	best_solution.print_solution();
-	cout << "--------------------------------------------------------------" << endl;
+	cout << "--------------------------------------------------------------" << endl ;
+	cout << endl << "Solución fitnes (" << best_solution.calculate_fitness() << ")\t" << iteration << endl;
+
 
 	return 0;
 }

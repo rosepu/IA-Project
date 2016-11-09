@@ -27,7 +27,7 @@ class solution
 		/* Metodos de la clase */
 		void set_instance(instance* ins);
 		void greedy(int seed);
-		solution swap(int i, int j, int k);
+		solution& swap(int i, int j, int k);
 		int eval_swap(int i, int j, int k);
 		void get_best_neighbour();
 		void print_solution();

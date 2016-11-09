@@ -18,9 +18,9 @@ solution::solution(instance &ins)
 	this->init = true;
 }
 
-solution solution::swap(int i, int j, int k)
+solution& solution::swap(int i, int j, int k)
 {
-	if (!(this->init)) return *this;
+	//if (!(this->init)) return *this;
 
 	char aux = matrix[j][i];
 	
@@ -200,7 +200,8 @@ int solution::calculate_fitness()
 				lastChar = currentChar;
 				js = j;
 				is = i;
-				j++;				
+				j = (j+1)%w;
+				if (j == 0) i = (i+1)%n;				
 
 				goto swbFound;
 			} else {
@@ -211,7 +212,7 @@ int solution::calculate_fitness()
 
 	swbFound:
 	while (!(i == is && j == js))
-	{
+	{ 
 		currentChar = matrix[i][j];
 		/* Calcula los work block*/
 		if (lastChar != dayOff && currentChar == dayOff)
