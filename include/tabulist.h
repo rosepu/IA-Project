@@ -7,10 +7,11 @@
 class tabulist
 {
     private:
-        std::vector<std::string> list;
+        //std::vector<std::string> list;
         int length, current_position;
 
     public:
+    	std::vector<std::string> list;
         tabulist(int tabu_length);
         ~tabulist();
         

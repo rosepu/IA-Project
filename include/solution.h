@@ -16,29 +16,20 @@ class solution
 		std::vector< std::vector<char> > matrix;  //[Week][Colum]
 
 		std::string matrixToString();
-		int eval_String(std::string cadena);
-		
-
 
 	public:
 		solution();
 		solution(instance &ins);
 
 		/* Metodos de la clase */
-		void set_instance(instance* ins);
 		void greedy(int seed);
 		solution& swap(int i, int j, int k);
 		solution& swapBlock(int i, int j, int k, int len);
-		int eval_swap(int i, int j, int k);
-		void get_best_neighbour();
 		void print_solution();
 		int calculate_fitness();
 		
-
 		/* funciones get */
 		int get_quality();
-
-		//TODO: funcion para obtener el workload
 
 		/* Sobre escritura de operadores */
 		solution& operator=(const solution& sol)
@@ -50,7 +41,6 @@ class solution
 			return *this;
 		}
 
-
 		bool operator <(const solution& right)
 		{
 			return this->quality < right.quality;
@@ -59,17 +49,6 @@ class solution
 		{
 			return this->quality > right.quality;
 		}
-		//TODO: sobre escribir los operadores == > <
-	
-		/* nested class */
-		class move
-		{
-			public:
-				int i,j,k;
-				move();
-				move(int i, int j, int k);
-				void set(int i, int j, int k);
-		};
 };
 
 

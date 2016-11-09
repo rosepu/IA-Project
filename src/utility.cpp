@@ -107,6 +107,13 @@ namespace utility
 		return os.str();
 	}
 
+	std::string moveToString(int i, int j, int k, int l)
+	{
+		ostringstream os;
+		os << i << "-" << j << "-" << k << "-" << l;
+		return os.str();
+	}
+
 	int distance(int wb_size, int min, int max)
 	{		
 		if (wb_size < min)

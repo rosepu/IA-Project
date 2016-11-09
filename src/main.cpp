@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 200000
+#define MAXITERATIONS 500
 
 using namespace std;
 
@@ -26,7 +26,6 @@ int main(int argc, char const *argv[])
 	cout << "Problema:\t\tRotating Workforce Scheduling Problem" << endl;
 	cout << "Heurísticas usadas:\tGreedy, Tabu Search" << endl;
 	cout << "Autor:\t\t\tRodrigo Sepúlveda Garrido" << endl;
-	cout << "--------------------------------------------------------------" << endl;
 
 	/* argumentos del programa */
 	if (argc <= 2)
@@ -37,6 +36,9 @@ int main(int argc, char const *argv[])
 	archivo_instancia = string("Instancias/") + string((char*)argv[1]);
 	seed = atoi(argv[2]);
 	
+	cout << "Intancia:\t\t" << archivo_instancia << endl;
+	cout << "--------------------------------------------------------------" << endl;
+
 	/* Instancia */
 	instance instancia(archivo_instancia);
 
@@ -104,6 +106,7 @@ int main(int argc, char const *argv[])
 			}
 		}
 
+		cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;
 		lista_tabu.add(bestSwap);
 		if (best_candidate_silution < best_solution)
 		{
