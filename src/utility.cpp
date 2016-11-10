@@ -125,7 +125,29 @@ namespace utility
 		return 0;
 	}
 
-	
+	void writeFileOut(std::string cadena, std::string archivo_instancia, bool status)
+	{	
+		size_t index = 0;
+		index = archivo_instancia.find("rwsp", index);
+		if (index == std::string::npos) return;
+		archivo_instancia = archivo_instancia.substr(0, index) + "out";
+
+		int ins;
+		sscanf( archivo_instancia.c_str(), "%*[^0-9]%d", &ins );
+		
+		ofstream fi;
+		fi.open( archivo_instancia.c_str() );
+		if(!fi.is_open()) return;
+		fi << "----- PROBLEM ..." << ins << " ";
+		if (status) fi << "SOLUTION";
+		fi << endl << cadena;
+		fi.flush();
+		fi.close();
+
+		
+	}
+
+
 	/* int countMatchInRegex(std::string s, std::string re)
 	{
 		std::regex words_regex(re);

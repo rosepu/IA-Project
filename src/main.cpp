@@ -106,7 +106,7 @@ int main(int argc, char const *argv[])
 			}
 		}
 
-		cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;
+		//cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;
 		lista_tabu.add(bestSwap);
 		if (best_candidate_silution < best_solution)
 		{
@@ -115,14 +115,13 @@ int main(int argc, char const *argv[])
 		}
 		current_solution = best_candidate_silution;	
 	}
-	
-	cout << "Solución current (" << current_solution.get_quality() << ") :" << endl;
-	current_solution.print_solution();
+
 	cout << "Solución best (" << best_solution.get_quality() << ") :" << endl;
 	best_solution.print_solution();
 	cout << "--------------------------------------------------------------" << endl ;
 	cout << endl << "Solución fitnes (" << best_solution.calculate_fitness() << ")\t" << iteration << endl;
 
+	utility::writeFileOut(best_solution.toString(), string((char*)argv[1]), 0==best_solution.get_quality());
 
 	return 0;
 }

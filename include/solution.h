@@ -3,6 +3,7 @@
  
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <vector>
 #include <stdlib.h>
 #include "instance.h"
@@ -26,6 +27,7 @@ class solution
 		solution& swap(int i, int j, int k);
 		solution& swapBlock(int i, int j, int k, int len);
 		void print_solution();
+		std::string toString();
 		int calculate_fitness();
 		
 		/* funciones get */

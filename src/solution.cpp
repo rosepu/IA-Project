@@ -118,15 +118,22 @@ void solution::print_solution()
 	} 
 }
 
-/*
-std::string solution::matrixToString(
+
+std::string solution::toString()
 {
-	std::string cadena;
-	/* Trasforma la matrix a un string 
-	for (int q=0; q<instancia.get_n(); q++) cadena += std::string(matrix[q].begin(), matrix[q].end());
-	return cadena;
+	std::ostringstream os;
+
+	for (int i=0; i<instancia.get_n(); i++)
+	{
+		for (int j=0; j<instancia.get_w(); j++)
+		{
+			os << matrix[i][j] << " ";
+		}
+		os << std::endl;
+	} 
+	return os.str();
 }
-*/
+
 
 int solution::calculate_fitness()
 {
