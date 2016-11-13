@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 500
+#define MAXITERATIONS 200
 
 using namespace std;
 
@@ -58,6 +58,7 @@ int main(int argc, char const *argv[])
 
 	for (iteration = 0; iteration < MAXITERATIONS; iteration++)
 	{
+		/*Genera el vecindario*/
 		minSwap = 100000;
 		for (int i=0; i<instancia.get_w(); i++)
 		{
@@ -79,6 +80,7 @@ int main(int argc, char const *argv[])
 					}
 				}
 			}
+			
 		}
 
 		for (int l = 2; l <= 3; l++)
@@ -106,6 +108,7 @@ int main(int argc, char const *argv[])
 			}
 		}
 
+		/*evalua la mejor opcion*/
 		//cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;
 		lista_tabu.add(bestSwap);
 		if (best_candidate_silution < best_solution)
