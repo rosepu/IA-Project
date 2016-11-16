@@ -99,7 +99,7 @@ std::vector<int> instance::get_MINS(){ return MINS; };
 
 std::vector< std::vector<int> > instance::get_R(){ return R; };
 
-std::vector< std::vector<char> > instance::get_C2(){ return C2; };
+std::vector< std::vector<int> > instance::get_C2(){ return C2; };
 
 std::vector< std::string > instance::get_pattersn() { return patterns; }
 

@@ -17,7 +17,7 @@ class instance
 		std::vector<char> A;
 		std::vector<int> MAXS, MINS;
 		std::vector< std::vector<int> > R;
-		std::vector< std::vector<char> > C2;
+		std::vector< std::vector<int> > C2;
 		std::vector< std::string > patterns;
 		std::map<char, int> map_A;
 		
@@ -44,7 +44,7 @@ class instance
 		std::vector<int> get_MAXS(); 
 		std::vector<int> get_MINS();
 		std::vector< std::vector<int> > get_R();
-		std::vector< std::vector<char> > get_C2();
+		std::vector< std::vector<int> > get_C2();
 		std::vector< std::string > get_pattersn();
 		std::map<char, int> get_mapA();
 };

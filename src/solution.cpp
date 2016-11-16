@@ -110,7 +110,7 @@ void solution::print_solution()
 		std::cout << i+1 << " ";
 		for (int j=0; j<instancia.get_w(); j++)
 		{
-			std::cout << matrix[i][j] << " ";
+			std::cout << instancia.get_A()[ matrix[i][j] ] << " ";
 		}
 		std::cout << std::endl;
 	} 
@@ -158,6 +158,7 @@ int solution::calculate_fitness()
 				is = i;
 				j = (j+1)%w;
 				if (j == 0) i = (i+1)%n;				
+				lastChar = currentChar;
 
 				goto swbFound;
 			} 
@@ -191,19 +192,23 @@ int solution::calculate_fitness()
 		}
 
 		/* Cuenta las secuencias invalidas */
+		std::vector<int> C2_aux;
 		for (int k = 0; k < l2; ++k)
 		{
-			if (instancia.get_C2()[k][0]==lastChar && instancia.get_C2()[k][1]==currentChar) total_sum++;
+			C2_aux = instancia.get_C2()[k];
+			if (
+				C2_aux[0]==lastChar && 
+				C2_aux[1]==currentChar
+			) total_sum++;
 		}
-
 
 		for (int k = 0; k < l3; ++k)
 		{
-			int l3_aux = l2+k;
+			C2_aux = instancia.get_C2()[ l2+k ];
 			if (
-				instancia.get_C2()[l3_aux][0]==lastChar && 
-				instancia.get_C2()[l3_aux][1]==currentChar &&
-				instancia.get_C2()[l3_aux][3]==matrix[i][j+1]
+				C2_aux[0]==lastChar && 
+				C2_aux[1]==currentChar &&
+				C2_aux[3]==matrix[i][j+1]
 			) total_sum++;
 		}
 
