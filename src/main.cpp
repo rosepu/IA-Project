@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 200
+#define MAXITERATIONS 1000
 
 using namespace std;
 
