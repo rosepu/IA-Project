@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <vector>
 #include <regex>
+#include <map>
 
 namespace utility
 {
