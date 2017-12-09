@@ -1,9 +1,12 @@
 #include "solution.h"
 
+/* Se declara la instancia, unica para todas las instancias de la clase */
+instance solution::instancia = instance();
+
 /* Constructor por defecto */
 solution::solution()
 {
-	this->init = false;
+	this->init = this->instancia.initialized();
 }
 
 /* Construcor de la clase */

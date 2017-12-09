@@ -40,6 +40,7 @@ class instance
 		int get_MINW();
 		int get_NSLength2();
 		int get_NSLength3();
+		bool initialized();
 		std::vector<char> get_A();
 		std::vector<int> get_MAXS(); 
 		std::vector<int> get_MINS();

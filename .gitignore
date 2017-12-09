@@ -31,5 +31,7 @@
 # Bin dir
 bin/
 
+root/
+
 #Visual Code
 .vscode
