@@ -17,7 +17,7 @@ namespace utility
 		vector<int> &MAXS,
 		vector<int> &MINS,
 		vector< vector<int> > &R,
-		vector< vector<char> > &C2		
+		vector< vector<int> > &C2		
 	)
 	{
 		FILE* fi;
@@ -78,18 +78,31 @@ namespace utility
 			sumRead += fscanf(fi, "#NSLength2\n%i\n#NSLength3\n%i\n\n#C2\n", &NSLength2, &NSLength3);
 			if (sumRead != 4) return 1;
 
+			/* maper for A-P */
+			std::map<char, int> map_A;
+			for (unsigned int i = 0; i < A.size(); i++)
+			{
+				map_A[ A[i] ] = i;
+			}
+
 			sumRead = 0;
 			C2.resize(NSLength2+NSLength3);
+			char auxChar1, auxChar2, auxChar3;
 			for (int i=0; i<NSLength2; i++)
 			{
 				C2[i].resize(2);
-				sumRead += fscanf(fi, "%c %c\n", &(C2[i][0]), &(C2[i][1]));
+				sumRead += fscanf(fi, "%c %c\n", &auxChar1, &auxChar2 );
+				C2[i][0] = map_A.find( auxChar1 )->second;
+				C2[i][1] = map_A.find( auxChar2 )->second;
 			}
 
 			for (int i=0; i<NSLength3; i++)
 			{
 				C2[NSLength2+i].resize(3);
-				sumRead += fscanf(fi, "%c %c %c\n", &(C2[NSLength2+i][0]), &(C2[NSLength2+i][1]), &(C2[NSLength2+i][2]) );
+				sumRead += fscanf(fi, "%c %c %c\n", &auxChar1, &auxChar2, &auxChar3 );
+				C2[NSLength2+i][0] = map_A.find( auxChar1 )->second;
+				C2[NSLength2+i][1] = map_A.find( auxChar2 )->second;
+				C2[NSLength2+i][2] = map_A.find( auxChar3 )->second;
 			}
 			if (sumRead != NSLength2*2+NSLength3*3 ) return 1;
 

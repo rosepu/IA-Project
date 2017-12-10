@@ -11,10 +11,10 @@
 class solution
 {
 	private:
-		instance instancia;
+		static instance instancia;
 		int quality;
 		bool init;
-		std::vector< std::vector<char> > matrix;  //[Week][Colum]
+		std::vector< std::vector<int> > matrix;  //[Week][Colum] //value = position in instancia.getA()
 
 		std::string matrixToString();
 

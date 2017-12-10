@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <vector>
 #include <regex>
+#include <map>
 
 namespace utility
 {
@@ -25,7 +26,7 @@ namespace utility
 		std::vector<int> &MAXS,
 		std::vector<int> &MINS,
 		std::vector< std::vector<int> > &R,
-		std::vector< std::vector<char> > &C2        
+		std::vector< std::vector<int> > &C2        
 	);
 
 	std::string moveToString(int i, int j, int k);

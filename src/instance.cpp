@@ -29,6 +29,7 @@ void instance::set_instance(std::string &archivo_instancia)
 	}
 }
 
+//TODO: check if used...
 void instance::set_patterns()
 {
 	if (!init) return;
@@ -91,6 +92,8 @@ int instance::get_NSLength2() { return NSLength2; }
 
 int instance::get_NSLength3() { return NSLength3; }
 
+bool instance::initialized() { return init; };
+
 std::vector<char>  instance::get_A(){ return A; };
 
 std::vector<int> instance::get_MAXS(){ return MAXS; };
@@ -99,8 +102,8 @@ std::vector<int> instance::get_MINS(){ return MINS; };
 
 std::vector< std::vector<int> > instance::get_R(){ return R; };
 
-std::vector< std::vector<char> > instance::get_C2(){ return C2; };
+std::vector< std::vector<int> > instance::get_C2(){ return C2; };
 
-std::vector< std::string > instance::get_pattersn() { return patterns; }
+std::vector< std::string > instance::get_pattersn() { return patterns; };
 
-std::map<char, int> instance::get_mapA() { return map_A; }
+std::map<char, int> instance::get_mapA() { return map_A; };

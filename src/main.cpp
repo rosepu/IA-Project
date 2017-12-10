@@ -11,7 +11,7 @@
 #include "tabulist.h"
 
 
-#define MAXITERATIONS 200
+#define MAXITERATIONS 1000
 
 using namespace std;
 
@@ -108,9 +108,15 @@ int main(int argc, char const *argv[])
 			}
 		}
 
-		/*evalua la mejor opcion*/
-		//cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;
+		// uncoment the next block for follow the program
+		/* 
+		if (iteration%10==0) 
+		{
+			cout << best_solution.get_quality() << "\t" << current_solution.get_quality() << "\t" << iteration << endl;	
+		}
+		*/
 		lista_tabu.add(bestSwap);
+		/*evalua la mejor opcion*/
 		if (best_candidate_silution < best_solution)
 		{
 			best_solution = best_candidate_silution;

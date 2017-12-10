@@ -1,9 +1,12 @@
 #include "solution.h"
 
+/* Se declara la instancia, unica para todas las instancias de la clase */
+instance solution::instancia = instance();
+
 /* Constructor por defecto */
 solution::solution()
 {
-	this->init = false;
+	this->init = this->instancia.initialized();
 }
 
 /* Construcor de la clase */
@@ -22,7 +25,7 @@ solution& solution::swap(int i, int j, int k)
 {
 	//if (!(this->init)) return *this;
 
-	char aux = matrix[j][i];
+	int aux = matrix[j][i];
 	
 	matrix[j][i] = matrix[k][i];
 	
@@ -36,8 +39,7 @@ solution& solution::swap(int i, int j, int k)
 
 solution& solution::swapBlock(int i, int j, int k, int len)
 {
-	char aux;
-	int js, ks, n=instancia.get_n();
+	int aux, js, ks, n=instancia.get_n();
 	for (int i = 0; i < len; ++i)
 	{
 		js = (j+i)%n;
@@ -61,28 +63,28 @@ void solution::greedy(int seed)
 	srand48(seed); //drand48 [0.0, 1.0]
 
 	int col_count, aux;
-	char auxChar;
-	std::vector< std::vector<char> > requirements;
+	std::vector< std::vector<int> > requirements;
 	requirements.resize( instancia.get_w() );
+	int freeShip = instancia.get_m()-1;
 
 
 	for (int i=0; i<instancia.get_w(); i++)
 	{
 		col_count = 0;
-		for (int j=0; j<instancia.get_m()-1; j++)
+		for (int j=0; j<freeShip; j++)
 		{
 			aux = (instancia.get_R())[j][i];
-			col_count += aux; 
-			auxChar = instancia.get_A()[j];
+			col_count += aux;  
 			for (int k=0; k<aux; k++)
 			{
-				requirements[i].push_back(auxChar);
+				requirements[i].push_back(j);
 			}
 		}
-		auxChar = instancia.get_A()[instancia.get_m()-1];
+
+		/* rellena con '-' faltantes */
 		for (int j=0; j<instancia.get_n()-col_count; j++)
 		{
-			requirements[i].push_back(auxChar);
+			requirements[i].push_back(freeShip);
 		}
 	}
 
@@ -96,7 +98,6 @@ void solution::greedy(int seed)
 		}
 	}
 	this->quality = solution::calculate_fitness();
-
 }
 
 void solution::print_solution()
@@ -112,12 +113,11 @@ void solution::print_solution()
 		std::cout << i+1 << " ";
 		for (int j=0; j<instancia.get_w(); j++)
 		{
-			std::cout << matrix[i][j] << " ";
+			std::cout << instancia.get_A()[ matrix[i][j] ] << " ";
 		}
 		std::cout << std::endl;
 	} 
 }
-
 
 std::string solution::toString()
 {
@@ -134,12 +134,11 @@ std::string solution::toString()
 	return os.str();
 }
 
-
 int solution::calculate_fitness()
 {
 	/* Generar bloques */
 	int i, j, is, js, w =  instancia.get_w(), n = instancia.get_n();
-	char lastChar, currentChar, dayOff = instancia.get_A()[ instancia.get_m() - 1 ];
+	int lastChar, currentChar, dayOff = instancia.get_m() - 1;
 	int count_wb, count_sb, total_sum=0, l2 = instancia.get_NSLength2(), l3= instancia.get_NSLength3();
 
 	std::vector<int> block_work;
@@ -147,7 +146,7 @@ int solution::calculate_fitness()
 	block_shift.resize( instancia.get_m() );
 
 	/* Busca un inicio de un bloque */
-	lastChar = ' ';
+	lastChar = -1;
 	for (i=0; i<n; i++)
 	{
 		for (j=0; j<w; j++)
@@ -158,16 +157,15 @@ int solution::calculate_fitness()
 				count_wb = 1;
 				count_sb = 1;
 
-				lastChar = currentChar;
 				js = j;
 				is = i;
 				j = (j+1)%w;
 				if (j == 0) i = (i+1)%n;				
+				lastChar = currentChar;
 
 				goto swbFound;
-			} else {
-				lastChar = currentChar;
-			}
+			} 
+			lastChar = currentChar;
 		}
 	}
 
@@ -179,8 +177,6 @@ int solution::calculate_fitness()
 		if (lastChar != dayOff && currentChar == dayOff)
 		{
 			block_work.push_back(count_wb);
-
-			
 		} else if (currentChar != dayOff) {
 			if (lastChar == dayOff) {
 				count_wb = 1;
@@ -189,30 +185,33 @@ int solution::calculate_fitness()
 			}
 		} 
 
-
 		/* Calcula shift bloque */
 		if (lastChar != currentChar) 
 		{
-			block_shift[ instancia.get_mapA().find( lastChar )->second ].push_back(count_sb);
+			block_shift[ lastChar ].push_back(count_sb);
 			count_sb = 1;
 		} else {
 			count_sb++;
 		}
 
 		/* Cuenta las secuencias invalidas */
+		std::vector<int> C2_aux;
 		for (int k = 0; k < l2; ++k)
 		{
-			if (instancia.get_C2()[k][0]==lastChar && instancia.get_C2()[k][1]==currentChar) total_sum++;
+			C2_aux = instancia.get_C2()[k];
+			if (
+				C2_aux[0]==lastChar && 
+				C2_aux[1]==currentChar
+			) total_sum++;
 		}
-
 
 		for (int k = 0; k < l3; ++k)
 		{
-			int l3_aux = l2+k;
+			C2_aux = instancia.get_C2()[ l2+k ];
 			if (
-				instancia.get_C2()[l3_aux][0]==lastChar && 
-				instancia.get_C2()[l3_aux][1]==currentChar &&
-				instancia.get_C2()[l3_aux][3]==matrix[i][j+1]
+				C2_aux[0]==lastChar && 
+				C2_aux[1]==currentChar &&
+				C2_aux[3]==matrix[i][j+1]
 			) total_sum++;
 		}
 
@@ -222,7 +221,7 @@ int solution::calculate_fitness()
 		j = (j+1)%w;
 		if (j == 0) i = (i+1)%n;
 	} 
-	block_shift[ instancia.get_mapA().find( lastChar )->second ].push_back(count_sb);
+	block_shift[ lastChar ].push_back(count_sb);
 
 	/* Evaluar bloques */
 	for (unsigned int i = 0; i < block_work.size(); ++i)
